@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.example.com/simpleHttp"
+        xmlns:ths="http://www.example.com/simpleHttp"
+        elementFormDefault="qualified">
+
+    <element name="configuration" type="ths:Configuration"/>
+
+    <complexType name="Configuration">
+        <sequence minOccurs="1" maxOccurs="unbounded">
+            <element name="bean" type="ths:url"/>
+        </sequence>
+
+    </complexType>
+
+
+
+    <complexType name="url">
+        <attribute name="classPath" type="string" use="required"/>
+        <attribute name="url" type="string" use="required"/>
+    </complexType>
+</schema>
+
+

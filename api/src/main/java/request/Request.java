@@ -1,4 +1,4 @@
-package page;
+package request;
 
 import org.apache.log4j.Logger;
 
@@ -14,7 +14,6 @@ import java.util.Map;
 public class Request {
     private static final Logger log= Logger.getLogger(Request.class);
     private String url;
-    private int sessionId;
     private TypeRequest typeRequest;
     private Map<String, String> parameters = new HashMap<>();
 
@@ -22,7 +21,6 @@ public class Request {
         log.info("Header request "+header);
         this.typeRequest = typeRequest;
         this.url = RequestProcessor.getURL(header);
-        this.sessionId=RequestProcessor.getSessionFromCookies(header);
     }
 
 

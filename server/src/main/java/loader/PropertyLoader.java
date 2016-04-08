@@ -1,8 +1,5 @@
-package utils;
+package loader;
 
-/**
- * Created by igladush on 07.04.16.
- */
 
 import org.apache.log4j.Logger;
 
