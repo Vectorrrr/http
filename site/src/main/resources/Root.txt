@@ -1,0 +1,7 @@
+<html>
+<head><title>Root Page</title></head>
+<body>
+<h2>Welcome. I think your name is Vanydssa!!!</h2>
+<h2>If you want to log in, click here<a href=http://localhost:8080/Login>Login in</a></h2>
+</body>
+</html>

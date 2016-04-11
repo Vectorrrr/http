@@ -1,6 +1,7 @@
-package page;
+package loader.page;
 
 
+import loader.PropertyLoader;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -18,7 +19,8 @@ import java.util.Map;
  */
 public class PageHolder {
     private static final Logger log = Logger.getLogger(PageHolder.class);
-
+    private static final PropertyLoader PROPERTY_LOADER=PropertyLoader.getPropertyLoader("server.configuration.properties");
+    private static final String DEFAULT_PAGES_DIRRECTORY = PROPERTY_LOADER.property("dirrectory.for.site.pages");
     /**
      * MAP contains key-value pairs where
      * the key serves the page file name, as the
@@ -26,14 +28,16 @@ public class PageHolder {
      */
     private static Map<String, WebPage> pages = new HashMap<>();
 
-    public static String getPage(String fileName) {
-        WebPage webPage = pages.get(fileName);
-        if (webPage != null && webPage.lastChangesDate() >= PageLoader.lastModifiedFile(fileName)) {
-            return pages.get(fileName).pageContent();
+    public static String getPage(String site) {
+        String pathInDir = String.format("%s%s.txt", DEFAULT_PAGES_DIRRECTORY, site);
+        WebPage webPage = pages.get(site);
+
+        if (webPage == null || webPage.lastChangesDate() < PageLoader.lastModifiedFile(pathInDir)) {
+            log.info(String.format(UPDATE_PAGE_INFORMATION, site));
+            pages.put(site, new WebPage(PageLoader.getPage(pathInDir)));
         }
-        log.info(String.format(UPDATE_PAGE_INFORMATION, fileName));
-        pages.put(fileName, new WebPage(PageLoader.getPage(fileName)));
-        return pages.get(fileName).pageContent();
+
+        return pages.get(site).pageContent();
     }
 
     private static final String UPDATE_PAGE_INFORMATION = "Updated information on the page with the URL %s";

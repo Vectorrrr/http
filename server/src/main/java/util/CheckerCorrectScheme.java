@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class CheckerCorrectScheme {
     private static final Logger log = Logger.getLogger(CheckerCorrectScheme.class);
-    private static final String INCCORECT_SCHEM = "This file does not meet the scheme %s";
+    private static final String INCORRECT_SCHEME = "This file does not meet the scheme %s";
 
     /**
      * The method receives a file to check
@@ -37,7 +37,7 @@ public class CheckerCorrectScheme {
             validator.validate(source);
             return true;
         } catch (SAXException | IOException e) {
-            log.warn(String.format(INCCORECT_SCHEM, e.getMessage()));
+            log.warn(String.format(INCORRECT_SCHEME, e.getMessage()));
             return false;
         }
     }

@@ -3,8 +3,5 @@
                xmlns="http://www.example.com/simpleHttp"
                xsi:schemaLocation="http://www.example.com/configurationSchem.xsd">
 
-
-    <bean url="/Exit"  classPath="ExitPage" />
     <bean url="/Root"  classPath="RootPage" />
 </configuration>
-

@@ -8,6 +8,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
+ * This file is intended to decompress jar archive.
+ * He unpacks all the content from subfolders in
+ * the specified folder
  * @author Gladush Ivan
  * @since 08.04.16.
  */
@@ -16,8 +19,9 @@ public class UnPackJar {
     private static final String EXCTRACTING_MESSAGE = "Extracting file: %s";
     private static final String UNPACK_ERROR = "When there is a file decompression error has occurred %s";
     private static final String ERROR_WRITE_FILE = "An error occurred while writing the file %s";
+
+    private final int BUFFER = 2_048;
     private File destFile;
-    public final int BUFFER = 2_048;
 
     public void unpack(String destinationDirectory, String nameJar) {
         try (JarFile jFile = new JarFile(new File(nameJar))) {

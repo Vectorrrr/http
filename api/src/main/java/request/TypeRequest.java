@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * The enumeration contains all the supported types http request
  * Created by igladush on 07.04.16.
  */
 public enum TypeRequest {
@@ -23,7 +24,6 @@ public enum TypeRequest {
         return typeRequest;
     }
 
-    //todo write static method get request type
     public static TypeRequest getTypeRequest(String request) {
         Matcher matcher = Pattern.compile(REGEX_FOR_SEARCH_TYPE_REQUEST).matcher(request);
         if (matcher.find()) {
