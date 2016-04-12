@@ -1,6 +1,7 @@
 package server;
 
 import client.Client;
+import loader.ClassManager;
 import loader.PropertyLoader;
 import loader.SiteLoader;
 import org.apache.log4j.Logger;
@@ -41,6 +42,7 @@ public class Server implements Runnable,AutoCloseable {
     public static void main(String[] args) {
         int port = Integer.valueOf(PROPERTY_LOADER.property("port"));
         server = new Server(port);
+        ClassManager.initProcessorHolder();
         new Thread(server).start();
         startServerControl();
         sc.close();

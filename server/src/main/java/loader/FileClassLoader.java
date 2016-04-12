@@ -16,27 +16,37 @@ import java.io.InputStream;
  */
 public class FileClassLoader extends ClassLoader {
     private static final Logger log = Logger.getLogger(FileClassLoader.class);
-    private static final PropertyLoader PROPERTY_LOADER=PropertyLoader.getPropertyLoader("server.configuration.properties");
     private static final String THE_LARGE_FILE = "The file %s you are trying to download is too large";
     private static final String EXCEPTION_READ_FILE = "Exception in read file %s";
-    private static final String defaultDir = PROPERTY_LOADER.property("default.unpack.dir");
     private static final String EXCEPTION_CREATE_INSTANCE = "I can't load file %s, because %s";
 
     public PageProcessor getInstance(String fileName) {
         byte b[] = fetchClassFromFS(fileName);
         try {
-            return (PageProcessor) defineClass(fileName, b, 0, b.length).newInstance();
+            return (PageProcessor) defineClass(getName(fileName), b, 0, b.length).newInstance();
         } catch (Exception e) {
             throw new IllegalArgumentException(String.format(EXCEPTION_CREATE_INSTANCE, fileName, e.getMessage()));
         }
+    }
+    public PageProcessor getInstance(String fileName,String className){
+        byte b[] = fetchClassFromFS(fileName);
+        try {
+            return (PageProcessor) defineClass(className, b, 0, b.length).newInstance();
+        } catch (Exception e) {
+            throw new IllegalArgumentException(String.format(EXCEPTION_CREATE_INSTANCE, fileName, e.getMessage()));
+        }
+    }
+    private String getName(String fileName) {
+        String[] temp=fileName.split("/");
+        return temp[temp.length-1].split("\\.")[0];
     }
 
     /**
      * The method of reading the contents
      * of the file returning it as an array of bytes
      */
-    private byte[] fetchClassFromFS(String path) {
-        File f = new File(String.format("%s/%s.class", defaultDir, path));
+    public byte[] fetchClassFromFS(String path) {
+        File f = new File(String.format(path));
 
         try (InputStream is = new FileInputStream(f)) {
             long length = f.length();

@@ -1,7 +1,9 @@
 package holder;
 
 
+import loader.ClassManager;
 import loader.FileClassLoader;
+import loader.PropertyLoader;
 import loader.page.PageHolder;
 import model.DefaultProcessHandler;
 import org.apache.log4j.Logger;
@@ -27,6 +29,8 @@ import java.util.Map;
 public class ProcessorHolder {
     private static final Logger log = Logger.getLogger(ProcessorHolder.class);
     private static final String EXCEPTION_IN_PARSE_FILE = "Exception in pars file %s";
+    private static final PropertyLoader PROPERTY_LOADER = PropertyLoader.getPropertyLoader("server.configuration.properties");
+    private static final String defaultDir = PROPERTY_LOADER.property("default.unpack.dir");
     private static final String SITE_URL = "/%s%s";
 
     private static Map<String, PageProcessor> processors = new HashMap<>();
@@ -58,19 +62,31 @@ public class ProcessorHolder {
     private static final class SaxHandler extends DefaultHandler {
 
         public static final String EXCEPTION_CRETE_FILE = "I can't create instance class %s, because %s";
-        public  FileClassLoader fileClassLoader = new FileClassLoader();
+        public FileClassLoader fileClassLoader = new FileClassLoader();
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attrs) {
             if ("bean".equals(qName)) {
                 String classPath = attrs.getValue("classPath");
+                String url=String.format(SITE_URL, siteName, attrs.getValue("url"));
                 try {
-                    processors.put(String.format(SITE_URL, siteName, attrs.getValue("url")), fileClassLoader.getInstance(classPath));
+                    processors.put(url, getInstance(classPath));
+                    ClassManager.addClass(url,classPath,fileClassLoader.fetchClassFromFS(getDefaultClassPath(classPath)));
                 } catch (Exception e) {
                     log.error(String.format(EXCEPTION_CRETE_FILE, classPath, e.getMessage()));
                 }
             }
         }
-    }
 
+        private PageProcessor getInstance(String classPath) {
+            return fileClassLoader.getInstance(getDefaultClassPath(classPath));
+        }
+
+        private String getDefaultClassPath(String classPath) {
+            return String.format("%s/%s.class",defaultDir,classPath);
+        }
+    }
+    public static void addNewProcessor(String url,PageProcessor pageProcessor){
+        processors.put(url,pageProcessor);
+    }
 }

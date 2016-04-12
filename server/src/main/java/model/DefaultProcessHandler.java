@@ -10,7 +10,7 @@ import response.Header;
  * @since 11.04.16.
  */
 public class DefaultProcessHandler {
-    public static String notFound(){
+    public static String notFound() {
         return Header.notFound();
     }
 }

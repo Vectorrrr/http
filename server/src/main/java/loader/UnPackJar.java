@@ -36,7 +36,7 @@ public class UnPackJar {
 
 
                 if (!entry.isDirectory()) {
-                    writeFile(jFile, entry,destinationDirectory);
+                    writeFile(jFile, entry, destinationDirectory);
                 }
             }
 
@@ -45,11 +45,11 @@ public class UnPackJar {
         }
     }
 
-    private void writeFile(JarFile jFile, JarEntry entry,String destinationDirectory) {
+    private void writeFile(JarFile jFile, JarEntry entry, String destinationDirectory) {
         int currentByte;
         byte data[] = new byte[BUFFER];
         try (BufferedInputStream is = new BufferedInputStream(jFile.getInputStream(entry));
-             FileOutputStream fos = new FileOutputStream(String.format("%s/%s",destinationDirectory,destFile.getName()));
+             FileOutputStream fos = new FileOutputStream(String.format("%s/%s", destinationDirectory, destFile.getName()));
              BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER)) {
             while ((currentByte = is.read(data, 0, BUFFER)) > 0) {
                 dest.write(data, 0, currentByte);

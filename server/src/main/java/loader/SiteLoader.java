@@ -29,19 +29,15 @@ public class SiteLoader {
         String siteName = getName(path);
         unPackJar(path);
         File mainDir = new File(tempDir);
-        File[] files=mainDir.listFiles();
-        if(files==null){
+        File[] files = mainDir.listFiles();
+        if (files == null) {
             return false;
         }
         if (loadProcessClass(files, siteName)) {
             loadPages(files, siteName);
-            loadClass(files,siteName);
         }
         deleteTempDir(mainDir);
         return true;
-    }
-
-    private void loadClass(File[] files, String siteName) {
     }
 
     private String getName(String path) {
