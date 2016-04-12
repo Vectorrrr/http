@@ -79,7 +79,7 @@ public class ProcessorHolder {
         }
 
         private PageProcessor getInstance(String classPath) {
-            return fileClassLoader.getInstance(getDefaultClassPath(classPath));
+            return fileClassLoader.getInstance(getDefaultClassPath(classPath),classPath);
         }
 
         private String getDefaultClassPath(String classPath) {

@@ -20,14 +20,7 @@ public class FileClassLoader extends ClassLoader {
     private static final String EXCEPTION_READ_FILE = "Exception in read file %s";
     private static final String EXCEPTION_CREATE_INSTANCE = "I can't load file %s, because %s";
 
-    public PageProcessor getInstance(String fileName) {
-        byte b[] = fetchClassFromFS(fileName);
-        try {
-            return (PageProcessor) defineClass(getName(fileName), b, 0, b.length).newInstance();
-        } catch (Exception e) {
-            throw new IllegalArgumentException(String.format(EXCEPTION_CREATE_INSTANCE, fileName, e.getMessage()));
-        }
-    }
+
     public PageProcessor getInstance(String fileName,String className){
         byte b[] = fetchClassFromFS(fileName);
         try {
@@ -36,10 +29,7 @@ public class FileClassLoader extends ClassLoader {
             throw new IllegalArgumentException(String.format(EXCEPTION_CREATE_INSTANCE, fileName, e.getMessage()));
         }
     }
-    private String getName(String fileName) {
-        String[] temp=fileName.split("/");
-        return temp[temp.length-1].split("\\.")[0];
-    }
+
 
     /**
      * The method of reading the contents
