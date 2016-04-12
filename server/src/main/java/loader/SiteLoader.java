@@ -20,7 +20,7 @@ public class SiteLoader {
     private static final String NOT_CORRECT_SCHEME = "Jar contains not correct scheme.";
     private static final String FILE_IN_DEFAULT_DIRECTORY = "%s/%s";
     private static final PropertyLoader PROPERTY_LOADER = PropertyLoader.getPropertyLoader("server.configuration.properties");
-    private static final String FILE_FOR_NEW_PAGES = PROPERTY_LOADER.property("dirrectory.for.site.pages");
+    private static final String FILE_FOR_NEW_PAGES = PROPERTY_LOADER.property("directory.for.site.pages");
     private String pathToScheme = PROPERTY_LOADER.property("path.to.scheme");
     private String manifestName = PROPERTY_LOADER.property("manifest.name");
     private String tempDir = PROPERTY_LOADER.property("default.unpack.dir");
@@ -28,13 +28,20 @@ public class SiteLoader {
     public boolean download(String path) {
         String siteName = getName(path);
         unPackJar(path);
-        File files = new File(tempDir);
-
+        File mainDir = new File(tempDir);
+        File[] files=mainDir.listFiles();
+        if(files==null){
+            return false;
+        }
         if (loadProcessClass(files, siteName)) {
             loadPages(files, siteName);
+            loadClass(files,siteName);
         }
-        deleteTempDir(files);
+        deleteTempDir(mainDir);
         return true;
+    }
+
+    private void loadClass(File[] files, String siteName) {
     }
 
     private String getName(String path) {
@@ -43,18 +50,18 @@ public class SiteLoader {
 
     }
 
-    private void loadPages(File files, String siteName) {
+    private void loadPages(File[] files, String siteName) {
         File dirForSite = new File(String.format(FILE_IN_DEFAULT_DIRECTORY, FILE_FOR_NEW_PAGES, siteName));
         dirForSite.mkdirs();
-        for (File file : files.listFiles()) {
+        for (File file : files) {
             if ("txt".equals(file.getName().split("\\.")[1])) {
                 file.renameTo(new File(String.format(FILE_IN_DEFAULT_DIRECTORY, dirForSite.getAbsolutePath(), file.getName())));
             }
         }
     }
 
-    private Boolean loadProcessClass(File files, String siteName) {
-        for (File file : files.listFiles()) {
+    private Boolean loadProcessClass(File[] files, String siteName) {
+        for (File file : files) {
             if (manifestName.equals(file.getName())) {
                 if (!CheckerCorrectScheme.isCorrectFile(file.getAbsolutePath(), pathToScheme)) {
                     log.error(NOT_CORRECT_SCHEME);
@@ -79,12 +86,14 @@ public class SiteLoader {
     }
 
     private void deleteTempDir(File dir) {
-        for (File children : dir.listFiles()) {
-            if (children.isDirectory()) {
-                deleteTempDir(children);
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File children : files) {
+                if (children.isDirectory()) {
+                    deleteTempDir(children);
+                }
+                children.delete();
             }
-            children.delete();
         }
-
     }
 }

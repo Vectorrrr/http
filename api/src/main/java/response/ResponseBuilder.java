@@ -14,16 +14,13 @@ public class ResponseBuilder {
     private StringBuilder header = new StringBuilder();
     private StringBuilder body = new StringBuilder();
 
-    private ResponseBuilder addHeader(String header) {
+    public ResponseBuilder addHeader(String header) {
         this.header.append(header).append(NEW_LINE);
         return this;
     }
 
-    public ResponseBuilder addHeader(Header header) {
-        return addHeader(header.toString());
-    }
 
-    public ResponseBuilder addHeader(Header header, int i) {
+    public ResponseBuilder addHeader(String header, int i) {
         return addHeader(String.format(header.toString(), i));
     }
 

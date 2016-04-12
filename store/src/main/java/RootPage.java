@@ -1,8 +1,6 @@
 import page.PageProcessor;
 import request.Request;
-import response.ResponseBuilder;
-
-import static response.Header.*;
+import response.Header;
 
 /**
  * @author Gladush Ivan
@@ -11,7 +9,7 @@ import static response.Header.*;
 public class RootPage implements PageProcessor {
     @Override
     public String process(Request request, String response) {
-        return new ResponseBuilder().addHeader(HTTP_OK).addHeader(CLOSE_CONNECTION).addHeader(CONTENT_LENGTH,response.length())
-                .addBody(response).build();
+        return Header.httpOk(response.length()).addBody(response).build();
+
     }
 }

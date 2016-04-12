@@ -1,29 +1,54 @@
 package response;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Enum contains components of the response header
  * @author Gladush Ivan
- * @since 06.04.16.
+ * @since 12.04.16.
  */
-//todo make property
-public enum Header {
-    PAGE_FOUND("HTTP/1.1 302 Found"),
-    REDIRECT_TO_ROOT_LOCATION("Location: http://localhost:8080"),
-    REDIRECT_TO_MAIN_LOCATION("Location: http://localhost:8080/Main"),
-    HTTP_OK("HTTP/1.1 200 OK"),
-    SET_COOKIE("Set-Cookie: session=%d;"),
-    CONTENT_LENGTH("Content-Length:  %d"),
-    CLOSE_CONNECTION("Connection: close"),
-    HTTP_NOT_FOUND("HTTP/1.1 404 NotFound");
+public class Header {
+    private static final String EMPTY_STRING = "";
+    private static  Map<String,String> headers=new HashMap<String,String>(){{
+        put("PAGE_FOUND", "HTTP/1.1 302 Found");
+        put("REDIRECT_TO_LOCATION", "Location: http://localhost:8080/%s");
+        put("HTTP_OK", "HTTP/1.1 200 OK");
+        put("SET_COOKIE", "Set-Cookie: session=%d;");
+        put("CONTENT_LENGTH","Content-Length:  %d");
+        put("CLOSE_CONNECTION","Connection: close");
+        put("HTTP_NOT_FOUND","HTTP/1.1 404 NotFound");
+    }};
 
-    Header(String header) {
-        this.header = header;
+    public static void addNewHeader(String key,String value){
+        headers.put(key,value);
+    }
+    public static String getValue(String key){
+        String value=headers.get(key);
+        if(value==null){
+            return EMPTY_STRING;
+        }
+        return value;
     }
 
-    private String header;
-
-    @Override
-    public String toString() {
-        return header;
+    public static String notFound() {
+        return new ResponseBuilder().addHeader(headers.get("HTTP_NOT_FOUND")).
+                addHeader(headers.get("CLOSE_CONNECTION")).build();
     }
+
+    public static ResponseBuilder httpOk(int length) {
+        return new ResponseBuilder().addHeader(headers.get("HTTP_OK")).addHeader(headers.get("CONTENT_LENGTH"),length).
+                addHeader(headers.get("CLOSE_CONNECTION"));
+    }
+    public static ResponseBuilder httpOk(int length, int sessionId) {
+        return httpOk(length).addHeader(headers.get("SET_COOKIE"),sessionId);
+    }
+
+
+    public static ResponseBuilder redirect(String siteName, int sessionId) {
+        return new ResponseBuilder().addHeader(headers.get("PAGE_FOUND")).
+                addHeader(String.format(headers.get("REDIRECT_TO_LOCATION"),siteName)).
+                addHeader(headers.get("SET_COOKIE"),sessionId);
+    }
+
+
 }

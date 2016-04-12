@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 
 /**
  * The enumeration contains all the supported types http request
- * Created by igladush on 07.04.16.
+ * @author Gladush Ivan
+ * @since 29.03.16.
  */
 public enum TypeRequest {
     POST("POST"), GET("GET"), UNKNOWN("UNKNOWN");
@@ -27,13 +28,13 @@ public enum TypeRequest {
     public static TypeRequest getTypeRequest(String request) {
         Matcher matcher = Pattern.compile(REGEX_FOR_SEARCH_TYPE_REQUEST).matcher(request);
         if (matcher.find()) {
-            return convertToTypeRequst(matcher.group(1));
+            return convertToTypeRequest(matcher.group(1));
         }
         log.warn(CANT_FIND_REQUEST);
         return TypeRequest.UNKNOWN;
     }
 
-    private static TypeRequest convertToTypeRequst(String nameType) {
+    private static TypeRequest convertToTypeRequest(String nameType) {
         for (TypeRequest tr : TypeRequest.values()) {
             if (tr.typeRequest().equals(nameType)) {
                 return tr;

@@ -26,8 +26,8 @@ public class RequestProcessor {
         return ROOT_PAGE_URL;
 
     }
-    public static int getSessionFromCookies(String reqest){
-        Matcher matcher= Pattern.compile(REGEX_FOR_SESSION_FROM_COOKIE).matcher(reqest);
+    public static int getSessionFromCookies(String request){
+        Matcher matcher= Pattern.compile(REGEX_FOR_SESSION_FROM_COOKIE).matcher(request);
         if(matcher.find()){
             return Integer.valueOf(matcher.group(1));
         }

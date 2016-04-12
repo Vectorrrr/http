@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class ProcessorHolder {
     private static final Logger log = Logger.getLogger(ProcessorHolder.class);
-    private static final String EXCEPTION_IN_PARCE_FILE = "Exception in pars file %s";
+    private static final String EXCEPTION_IN_PARSE_FILE = "Exception in pars file %s";
     private static final String SITE_URL = "/%s%s";
 
     private static Map<String, PageProcessor> processors = new HashMap<>();
@@ -49,7 +49,7 @@ public class ProcessorHolder {
             SaxHandler handler = new SaxHandler();
             parser.parse(f, handler);
         } catch (Exception e) {
-            log.error(String.format(EXCEPTION_IN_PARCE_FILE, e.getMessage()));
+            log.error(String.format(EXCEPTION_IN_PARSE_FILE, e.getMessage()));
             return false;
         }
         return true;

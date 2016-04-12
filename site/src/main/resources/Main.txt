@@ -1,0 +1,7 @@
+<html>
+<head><title>Main Page</title></head>
+<body>
+<h2>Welcome %s. In the main form!</h2>
+<h2>If you want exit click this link <a href=./Exit>Exit</a></h2>
+</body>
+</html>

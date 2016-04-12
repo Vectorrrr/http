@@ -2,9 +2,9 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xmlns="http://www.example.com/simpleHttp"
                xsi:schemaLocation="http://www.example.com/configurationSchem.xsd">
-
-
-    <bean url="/Exit"  classPath="ExitPage" />
     <bean url="/Root"  classPath="RootPage" />
+    <bean url="/Login"  classPath="LoginPage" />
+    <bean url="/Main"  classPath="MainPage" />
+    <bean url="/Exit"  classPath="ExitPage" />
 </configuration>
 

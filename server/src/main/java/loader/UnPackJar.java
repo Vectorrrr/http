@@ -19,8 +19,8 @@ public class UnPackJar {
     private static final String EXCTRACTING_MESSAGE = "Extracting file: %s";
     private static final String UNPACK_ERROR = "When there is a file decompression error has occurred %s";
     private static final String ERROR_WRITE_FILE = "An error occurred while writing the file %s";
+    private static final int BUFFER = 2_048;
 
-    private final int BUFFER = 2_048;
     private File destFile;
 
     public void unpack(String destinationDirectory, String nameJar) {

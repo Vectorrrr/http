@@ -15,7 +15,7 @@ public class Client implements Runnable {
     private final Logger log = Logger.getLogger(Client.class);
     private static final String INCORRECT_CLOSE = "Incorrect close connection. May be client close socket in browser %s";
 
-    private Connection connection;
+    private final Connection connection;
 
     public Client(Connection connection) {
         log.info("New client");
@@ -27,10 +27,11 @@ public class Client implements Runnable {
     public void run() {
         try {
             Request request = connection.getRequest();
-            connection.writeResponse(ProcessorHolder.process(request));
+            if(!connection.writeResponse(ProcessorHolder.process(request))) {
+                log.error("User response was sent incorrectly");
+            }
             connection.close();
         } catch (Exception e) {
-            e.printStackTrace();
             log.warn(String.format(INCORRECT_CLOSE, e.getMessage()));
         }
     }

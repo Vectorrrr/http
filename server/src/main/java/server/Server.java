@@ -15,7 +15,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by igladush on 07.04.16.
+ * This class allows you to run the server
+ * and add it to the sites to work with them.
+ * The server runs on port 8080 to the address
+ * that is set in preferences. You can stop
+ * the server. After stopping the server, all
+ * the information about uploading sites will be lost
+ * @author Gladush Ivan
+ * @since 08.04.16.
  */
 public class Server implements Runnable,AutoCloseable {
     private static final Logger log = Logger.getLogger(Server.class);
@@ -23,13 +30,15 @@ public class Server implements Runnable,AutoCloseable {
     private static final String NEW_SOCKET = "Accept new socket";
     private static final String ERROR_IN_SERVER_WORK = "An error occurred while the server work %s";
     private static final String CONTROL_SERVER_EXCEPTION = "Server controller method catch exception %s";
-    private static final PropertyLoader PROPERTY_LOADER=PropertyLoader.getPropertyLoader("server.configuration.properties");
+    private static final PropertyLoader PROPERTY_LOADER = PropertyLoader.getPropertyLoader("server.configuration.properties");
+    private static final String JAR_FILE_LOAD_INCORRECT = "Jar file has been loaded correctly, check that all the necessary resources in the archive";
+
     private static ExecutorService executor = Executors.newFixedThreadPool(Integer.valueOf(PROPERTY_LOADER.property("count.thread.for.client")));
     private static Scanner sc = new Scanner(System.in);
     private static Server server = null;
     private static SiteLoader siteLoader = new SiteLoader();
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         int port = Integer.valueOf(PROPERTY_LOADER.property("port"));
         server = new Server(port);
         new Thread(server).start();
@@ -77,7 +86,9 @@ public class Server implements Runnable,AutoCloseable {
         switch (answer) {
             case 1:
                 System.out.println("Input path to file");
-                siteLoader.download(sc.nextLine());
+                if (!siteLoader.download(sc.nextLine())) {
+                    log.error(JAR_FILE_LOAD_INCORRECT);
+                }
                 break;
             case 0:
                 server.close();

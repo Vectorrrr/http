@@ -20,7 +20,7 @@ import java.util.Map;
 public class PageHolder {
     private static final Logger log = Logger.getLogger(PageHolder.class);
     private static final PropertyLoader PROPERTY_LOADER=PropertyLoader.getPropertyLoader("server.configuration.properties");
-    private static final String DEFAULT_PAGES_DIRRECTORY = PROPERTY_LOADER.property("dirrectory.for.site.pages");
+    private static final String DEFAULT_PAGES_DIRECTORY = PROPERTY_LOADER.property("directory.for.site.pages");
     /**
      * MAP contains key-value pairs where
      * the key serves the page file name, as the
@@ -29,7 +29,7 @@ public class PageHolder {
     private static Map<String, WebPage> pages = new HashMap<>();
 
     public static String getPage(String site) {
-        String pathInDir = String.format("%s%s.txt", DEFAULT_PAGES_DIRRECTORY, site);
+        String pathInDir = String.format("%s%s.txt", DEFAULT_PAGES_DIRECTORY, site);
         WebPage webPage = pages.get(site);
 
         if (webPage == null || webPage.lastChangesDate() < PageLoader.lastModifiedFile(pathInDir)) {

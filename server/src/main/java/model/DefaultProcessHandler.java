@@ -1,7 +1,6 @@
 package model;
 
 import response.Header;
-import response.ResponseBuilder;
 
 /**
  * If the request came from the browser,
@@ -12,6 +11,6 @@ import response.ResponseBuilder;
  */
 public class DefaultProcessHandler {
     public static String notFound(){
-        return new ResponseBuilder().addHeader(Header.HTTP_NOT_FOUND).addHeader(Header.CLOSE_CONNECTION).build();
+        return Header.notFound();
     }
 }
