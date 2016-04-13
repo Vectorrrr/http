@@ -18,7 +18,7 @@ public class LoginPage implements PageProcessor {
         if (TypeRequest.GET.equals(request.typeRequest())) {
             return doGet(request,response);
         }
-        return doPost(request,response);
+        return doPost(request);
 
     }
 
@@ -31,7 +31,7 @@ public class LoginPage implements PageProcessor {
         return Header.httpOk(response.length()).addBody(response).build();
     }
 
-    private String doPost(Request request, String response) {
+    private String doPost(Request request) {
         User user = createUser(request);
         return redirectPageAnswer(SessionHolder.addSession(user));
     }

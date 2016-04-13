@@ -85,8 +85,7 @@ public class ClassManager {
      */
     private static void writeClass(byte[] classContent) throws IOException {
         File f = new File(getPathInDirectory(getCountClass()));
-        createFile(f);
-        try (FileOutputStream fw = new FileOutputStream(f)) {
+        try (FileOutputStream fw = new FileOutputStream(createFile(getCountClass()))) {
             fw.write(classContent);
         }
         countClass++;
@@ -96,10 +95,12 @@ public class ClassManager {
         return countClass + CLASS;
     }
 
-    private static void createFile(File f) throws IOException {
+    private static File createFile(String  fileName) throws IOException {
+        File f =new File(getPathInDirectory(fileName));
         if (!f.createNewFile()) {
             log.warn(String.format(CANT_CREATE_FILE, f.getName()));
         }
+        return f;
     }
 
     private static File getManifestFile() {
@@ -121,7 +122,7 @@ public class ClassManager {
             File f = getManifestFile();
             if (!f.exists()) {
                 manifestExist = true;
-                createFile(f);
+                f.createNewFile();
                 return false;
             }
         }
