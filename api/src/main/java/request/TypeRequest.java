@@ -15,6 +15,7 @@ public enum TypeRequest {
     private static final Logger log = Logger.getLogger(TypeRequest.class);
     private static final String CANT_FIND_REQUEST = "I can't find a request type. Check correct you regexp. I return a unknown type";
     private static final String REGEX_FOR_SEARCH_TYPE_REQUEST = "([A-Z]+(?=\\s))";
+    private static final Pattern TYPE_REQUEST_PATTERN = Pattern.compile(REGEX_FOR_SEARCH_TYPE_REQUEST);
     private String typeRequest;
 
     TypeRequest(String typeRequest) {
@@ -25,10 +26,16 @@ public enum TypeRequest {
         return typeRequest;
     }
 
+    /**
+     * The method returns the type of http request, if
+     * the type is missing or it is not known back UNKNOWN type
+     */
     public static TypeRequest getTypeRequest(String request) {
-        Matcher matcher = Pattern.compile(REGEX_FOR_SEARCH_TYPE_REQUEST).matcher(request);
-        if (matcher.find()) {
-            return convertToTypeRequest(matcher.group(1));
+        if (request != null) {
+            Matcher matcher = TYPE_REQUEST_PATTERN.matcher(request);
+            if (matcher.find()) {
+                return convertToTypeRequest(matcher.group(1));
+            }
         }
         log.warn(CANT_FIND_REQUEST);
         return TypeRequest.UNKNOWN;

@@ -9,7 +9,6 @@ import static junit.framework.TestCase.assertEquals;
  * @since 11.04.16.
  */
 public class RequestProcessorTest {
-    private static final String EMPTY_STRING = "";
 
     @Test
     public void get_method_name_test1() {

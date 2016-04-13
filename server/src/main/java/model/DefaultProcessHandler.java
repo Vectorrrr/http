@@ -1,5 +1,7 @@
 package model;
 
+import page.PageProcessor;
+import request.Request;
 import response.Header;
 
 /**
@@ -9,8 +11,9 @@ import response.Header;
  * @author Gladush Ivan
  * @since 11.04.16.
  */
-public class DefaultProcessHandler {
-    public static String notFound() {
+public class DefaultProcessHandler implements PageProcessor {
+    @Override
+    public String process(Request request, String response) {
         return Header.notFound();
     }
 }

@@ -1,6 +1,5 @@
 package loader;
 
-import holder.ProcessorHolder;
 import org.apache.log4j.Logger;
 import util.CheckerCorrectScheme;
 
@@ -21,10 +20,16 @@ public class SiteLoader {
     private static final String FILE_IN_DEFAULT_DIRECTORY = "%s/%s";
     private static final PropertyLoader PROPERTY_LOADER = PropertyLoader.getPropertyLoader("server.configuration.properties");
     private static final String FILE_FOR_NEW_PAGES = PROPERTY_LOADER.property("directory.for.site.pages");
+
     private String pathToScheme = PROPERTY_LOADER.property("path.to.scheme");
     private String manifestName = PROPERTY_LOADER.property("manifest.name");
     private String tempDir = PROPERTY_LOADER.property("default.unpack.dir");
 
+    /**
+     * The method downloads the site in memory of the server
+     * receiving this website in the specified path. The method
+     * returns whether successful or not loading
+     * */
     public boolean download(String path) {
         String siteName = getName(path);
         unPackJar(path);
@@ -63,7 +68,7 @@ public class SiteLoader {
                     log.error(NOT_CORRECT_SCHEME);
                     return false;
                 }
-                ProcessorHolder.addLoadNewFile(getF(file), siteName);
+                ClassManager.addLoadNewFile(getFile(file), siteName);
                 break;
             }
 
@@ -71,7 +76,7 @@ public class SiteLoader {
         return true;
     }
 
-    private File getF(File file) {
+    private File getFile(File file) {
         return new File(String.format(FILE_IN_DEFAULT_DIRECTORY, tempDir, file.getName()));
     }
 

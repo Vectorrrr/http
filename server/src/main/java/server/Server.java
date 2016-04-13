@@ -39,50 +39,17 @@ public class Server implements Runnable,AutoCloseable {
     private static Server server = null;
     private static SiteLoader siteLoader = new SiteLoader();
 
+    private int port;
+    private boolean runnable = true;
+
     public static void main(String[] args) {
-        int port = Integer.valueOf(PROPERTY_LOADER.property("port"));
-        server = new Server(port);
+        server = new Server(Integer.valueOf(PROPERTY_LOADER.property("port")));
         ClassManager.initProcessorHolder();
         new Thread(server).start();
         startServerControl();
         sc.close();
 
     }
-
-    private static void startServerControl() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            int temp = 0;
-            while (temp == 0) {
-                printMainMenu();
-                temp = doInstruction(scanner.nextInt());
-            }
-        } catch (Exception e) {
-            log.error(String.format(CONTROL_SERVER_EXCEPTION, e.getMessage()));
-        }
-    }
-
-
-    private int port;
-    private boolean runnable = true;
-
-    private Server(int port) {
-        this.port = port;
-    }
-
-    @Override
-    public void run() {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            while (runnable) {
-                Socket socket = serverSocket.accept();
-                executor.execute(new Client(new Connection(socket)));
-                log.info(NEW_SOCKET);
-            }
-        } catch (IOException e) {
-            log.error(String.format(ERROR_IN_SERVER_WORK, e.getMessage()));
-        }
-        log.info(SERVER_STOPPED);
-    }
-
 
     private static int doInstruction(int answer) throws Exception {
         switch (answer) {
@@ -106,6 +73,36 @@ public class Server implements Runnable,AutoCloseable {
     private static void printMainMenu() {
         System.out.println("If you want add site type 1");
         System.out.println("If you want stop work server type 0");
+    }
+
+    private static void startServerControl() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int temp = 0;
+            while (temp == 0) {
+                printMainMenu();
+                temp = doInstruction(scanner.nextInt());
+            }
+        } catch (Exception e) {
+            log.error(String.format(CONTROL_SERVER_EXCEPTION, e.getMessage()));
+        }
+    }
+
+    private Server(int port) {
+        this.port = port;
+    }
+
+    @Override
+    public void run() {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            while (runnable) {
+                Socket socket = serverSocket.accept();
+                executor.execute(new Client(new Connection(socket)));
+                log.info(NEW_SOCKET);
+            }
+        } catch (IOException e) {
+            log.error(String.format(ERROR_IN_SERVER_WORK, e.getMessage()));
+        }
+        log.info(SERVER_STOPPED);
     }
 
     @Override

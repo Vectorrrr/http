@@ -21,7 +21,7 @@ public class FileClassLoader extends ClassLoader {
     private static final String EXCEPTION_CREATE_INSTANCE = "I can't load file %s, because %s";
 
 
-    public PageProcessor getInstance(String fileName,String className){
+    public PageProcessor getInstance(String fileName, String className) {
         byte b[] = fetchClassFromFS(fileName);
         try {
             return (PageProcessor) defineClass(className, b, 0, b.length).newInstance();
@@ -36,7 +36,7 @@ public class FileClassLoader extends ClassLoader {
      * of the file returning it as an array of bytes
      */
     public byte[] fetchClassFromFS(String path) {
-        File f = new File(String.format(path));
+        File f = new File(path);
 
         try (InputStream is = new FileInputStream(f)) {
             long length = f.length();

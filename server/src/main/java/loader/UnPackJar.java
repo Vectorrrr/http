@@ -23,6 +23,11 @@ public class UnPackJar {
 
     private File destFile;
 
+    /**
+     * The method copies the entire contents of
+     * the archive to the specified folder, and
+     * the file itself or does not change
+     * */
     public void unpack(String destinationDirectory, String nameJar) {
         try (JarFile jFile = new JarFile(new File(nameJar))) {
             File unzipDir = new File(destinationDirectory);

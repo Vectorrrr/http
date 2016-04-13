@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 30.03.16.
  */
 public class Session {
-    private static final Logger log =Logger.getLogger(Session.class);
+    private static final Logger log = Logger.getLogger(Session.class);
     private static AtomicInteger countSession = new AtomicInteger(-2);
     private int id;
     private User user;
@@ -26,7 +26,7 @@ public class Session {
     public Session(User user) {
         this.user = user;
         this.id = countSession.addAndGet(1);
-        log.trace(String.format("\nCreate new session with user %s and the id session is %d\n",user,id));
+        log.trace(String.format("Create new session with user %s and the id session is %d", user, id));
     }
 
     Session(int id) {

@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 public class ResponseBuilder {
     private static final Logger log = Logger.getLogger(ResponseBuilder.class);
     private static final String NEW_LINE = "\r\n";
+    private static final String HEADER_RESPONSE = "Header response %s";
     private StringBuilder header = new StringBuilder();
     private StringBuilder body = new StringBuilder();
 
@@ -21,15 +22,16 @@ public class ResponseBuilder {
 
 
     public ResponseBuilder addHeader(String header, int i) {
-        return addHeader(String.format(header.toString(), i));
+        return addHeader(String.format(header, i));
     }
 
     public ResponseBuilder addBody(String body) {
         this.body.append(body);
         return this;
     }
+
     public String build() {
-        log.info(String.format("Header response %s",header.toString()));
+        log.info(String.format(HEADER_RESPONSE, header.toString()));
         return header.append(NEW_LINE).append(body).toString();
     }
 }

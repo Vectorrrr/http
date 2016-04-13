@@ -31,7 +31,9 @@ public class PageLoader {
         }
         return sb.toString();
     }
-
+    /**
+     * This method returns the last changes in the file
+     * */
     public static long lastModifiedFile(String fileName) {
         return new File(fileName).lastModified();
     }

@@ -12,26 +12,36 @@ import java.util.regex.Pattern;
  * @since 29.03.16.
  */
 public class RequestProcessor {
-    private static final Logger log= Logger.getLogger(RequestProcessor.class);
-    private static final String REGEX_FOR_GET_URL="((?<= )/(.*)(?= HTTP))";
+    private static final Logger log = Logger.getLogger(RequestProcessor.class);
+    private static final String REGEX_FOR_GET_URL = "((?<= )/(.*)(?= HTTP))";
     private static final String ROOT_PAGE_URL = "/";
-    private static final String REGEX_FOR_SESSION_FROM_COOKIE ="((?<=session=)((-){0,1}[0-9]+))";
+    private static final String REGEX_FOR_SESSION_FROM_COOKIE = "((?<=session=)((-)?[0-9]+))";
 
-    public static String getURL(String request){
+    /**
+     * The method extracts the URL of the request
+     */
+    public static String getURL(String request) {
         Matcher matcher = Pattern.compile(REGEX_FOR_GET_URL).matcher(request);
-        if(matcher.find()){
+        if (matcher.find()) {
             return matcher.group(1);
         }
         log.warn(DONT_FIND_URL);
         return ROOT_PAGE_URL;
 
     }
-    public static int getSessionFromCookies(String request){
-        Matcher matcher= Pattern.compile(REGEX_FOR_SESSION_FROM_COOKIE).matcher(request);
-        if(matcher.find()){
+
+    /**
+     * The method extracts the session ID from the cookie.
+     * If cookies are not available or they do not have number of
+     * sessions, the method returns -1
+     */
+    public static int getSessionFromCookies(String request) {
+        Matcher matcher = Pattern.compile(REGEX_FOR_SESSION_FROM_COOKIE).matcher(request);
+        if (matcher.find()) {
             return Integer.valueOf(matcher.group(1));
         }
         return -1;
     }
+
     private static final String DONT_FIND_URL = "URL doesn't contains url. Method return a root page URL";
 }

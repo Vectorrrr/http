@@ -10,7 +10,10 @@ import java.net.Socket;
 
 /**
  * This class models the connection
- * between the client and the server
+ * between the client and the server.
+ * It allows you to read the request and
+ * send a response. The request is read only
+ * once. The same method can close the socket
  * @author Gladush Ivan
  * @since 29.03.16.
  */
@@ -21,6 +24,8 @@ public class Connection  implements AutoCloseable {
     private static final String INCORRECT_PARAMETER_IN_CONTENT = "Incorrect parameter in content %s";
     private static final String CANT_SEND_RESPONSE = "Can't send response client because %s";
     private static final String CONTENT_HEADER = "Content-Length: ";
+    private static final String AMPERSAND = "&";
+    private static final String EQUALLY = "=";
 
     private Socket socket;
     private Request request = null;
@@ -32,6 +37,10 @@ public class Connection  implements AutoCloseable {
         this.socket = socket;
     }
 
+    /**
+     * Method checks for the request in the class,
+     * and if it is not read request from a socket
+     */
     public Request getRequest() {
         try {
             if (request == null) {
@@ -49,8 +58,8 @@ public class Connection  implements AutoCloseable {
      * Method parse content and add this content in request
      */
     private void parseContentRequest(String content) {
-        for (String parameter : content.split("&")) {
-            String[] keyValue = parameter.split("=");
+        for (String parameter : content.split(AMPERSAND)) {
+            String[] keyValue = parameter.split(EQUALLY);
             if (keyValue.length != 2) {
                 log.warn(String.format(INCORRECT_PARAMETER_IN_CONTENT, parameter));
             } else {

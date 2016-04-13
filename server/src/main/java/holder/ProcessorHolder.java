@@ -32,15 +32,20 @@ public class ProcessorHolder {
     private static final PropertyLoader PROPERTY_LOADER = PropertyLoader.getPropertyLoader("server.configuration.properties");
     private static final String defaultDir = PROPERTY_LOADER.property("default.unpack.dir");
     private static final String SITE_URL = "/%s%s";
-
+    private static final DefaultProcessHandler defualtProcessHandler=new DefaultProcessHandler();
+    private static final String EMPTY_STRING = "";
     private static Map<String, PageProcessor> processors = new HashMap<>();
     private static String siteName;
-
+    /**
+     * The method returns the request handler for this request,
+     * if the handler is not found, the method returns the default
+     * handler for requests
+     * */
     public static String process(Request request) {
         String url = request.getUrl();
         PageProcessor processHandler = processors.get(url);
         if (processHandler == null) {
-            return DefaultProcessHandler.notFound();
+            return defualtProcessHandler.process(request, EMPTY_STRING);
         }
         return processHandler.process(request, PageHolder.getPage(url));
     }
